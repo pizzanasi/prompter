@@ -1,0 +1,14 @@
+{
+  "name": "prompter",
+  "version": "1.0.0",
+  "description": "Teleprompter overlay dengan background transparan",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "postinstall": "install-electron",
+    "start": "install-electron && electron ."
+  },
+  "devDependencies": {
+    "electron": "^44.4.5"
+  }
+}
