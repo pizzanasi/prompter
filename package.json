@@ -6,9 +6,12 @@
   "main": "main.js",
   "scripts": {
     "postinstall": "install-electron",
-    "start": "install-electron && electron ."
+    "start": "install-electron && electron .",
+    "deploy": "wrangler deploy",
+    "web": "wrangler dev"
   },
   "devDependencies": {
-    "electron": "^44.4.5"
+    "electron": "^44.4.5",
+    "wrangler": "^4.143.0"
   }
 }

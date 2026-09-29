@@ -20,7 +20,7 @@
   const DEFAULTS = {
     lang: /^id\b/i.test(navigator.language || '') ? 'id' : 'en',
     speed: 5,
-    fontSize: 56,
+    fontSize: window.innerWidth < 600 ? 34 : 56, // phones get a size that fits a few words per line
     lineHeight: 1.45,
     width: 90,
     fontFamily: 'sans',
@@ -452,6 +452,11 @@
       case 'H':
       case '?':
       case 'F1': togglePanel('help'); break;
+      case 'f':
+      case 'F':
+        if (api) return; // the desktop window has its own size handles
+        toggleFullscreen();
+        break;
       case 'l':
       case 'L':
         settings.lang = settings.lang === 'id' ? 'en' : 'id';
@@ -463,6 +468,32 @@
     }
     e.preventDefault();
   });
+
+  function toggleFullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen?.();
+    else document.documentElement.requestFullscreen?.().catch(() => {});
+  }
+
+  // Phones and tablets have no arrow keys: let a finger drag the text directly.
+  let touchY = null;
+  el.stage.addEventListener('pointerdown', (e) => {
+    if (e.pointerType !== 'touch') return;
+    touchY = e.clientY;
+    try {
+      el.stage.setPointerCapture(e.pointerId);
+    } catch {
+      // Pointer already gone; the drag still works while the finger stays on the stage.
+    }
+  });
+  el.stage.addEventListener('pointermove', (e) => {
+    if (touchY == null) return;
+    pos += touchY - e.clientY;
+    nudge = 0;
+    touchY = e.clientY;
+  });
+  const endTouch = () => { touchY = null; };
+  el.stage.addEventListener('pointerup', endTouch);
+  el.stage.addEventListener('pointercancel', endTouch);
 
   el.frame.addEventListener('wheel', (e) => {
     if (e.target instanceof Element && e.target.closest('.panel')) return;
@@ -491,6 +522,7 @@
   $('btnEdit').addEventListener('click', () => togglePanel('editor'));
   $('btnSettings').addEventListener('click', () => togglePanel('settings'));
   $('btnHelp').addEventListener('click', () => togglePanel('help'));
+  $('btnFullscreen').addEventListener('click', toggleFullscreen);
   $('btnMin').addEventListener('click', () => api?.minimize());
   $('btnClose').addEventListener('click', () => api?.close());
   $('btnSaveScript').addEventListener('click', saveEditor);
@@ -517,7 +549,7 @@
   });
 
   document.addEventListener('mousemove', wakeUi);
-  document.addEventListener('mousedown', wakeUi);
+  document.addEventListener('pointerdown', wakeUi); // covers taps on touch screens too
   document.documentElement.addEventListener('mouseleave', () => {
     clearTimeout(idleTimer);
     idleTimer = setTimeout(sleepUi, 700);

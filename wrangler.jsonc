@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "prompter",
+  "compatibility_date": "2026-09-26",
+  // The web version: Cloudflare serves the files in web/ as a static site.
+  // main.js / preload.js are desktop-only and never uploaded.
+  "assets": {
+    "directory": "./web"
+  }
+}

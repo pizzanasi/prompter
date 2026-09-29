@@ -61,7 +61,7 @@ function createWindow() {
   });
 
   win.setAlwaysOnTop(true, 'screen-saver');
-  win.loadFile(path.join(__dirname, 'index.html'));
+  win.loadFile(path.join(__dirname, 'web', 'index.html'));
 
   // Dropping a file must load it as a script, never navigate the window to it.
   win.webContents.on('will-navigate', (e) => e.preventDefault());

@@ -122,6 +122,7 @@ body.playing .icon .i-pause { display: block; }
   position: absolute;
   inset: 0;
   overflow: hidden;
+  touch-action: none;
 }
 body.fade #stage {
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%);
