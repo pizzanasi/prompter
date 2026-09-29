@@ -41,13 +41,19 @@ On Windows you can also double-click `Prompter.vbs` (after `npm install`) to ope
 | `E` | Edit script |
 | `S` | Settings |
 | `L` | Switch language |
+| `P` | Float above other apps (web, Chrome/Edge) |
+| `F` | Fullscreen (web) |
 | `H` | Show all shortcuts |
 
 Move the window by dragging its top edge. Resize it by dragging a side or the bottom-right corner.
 
 ## In a browser
 
-The `web/` folder is the whole interface and also runs as a plain web page ([live here](https://prompter.tintapenari.workers.dev)). Scrolling, the keyboard controls, settings and both languages all work there, plus fullscreen (`F`) and finger-dragging on phones and tablets. Browsers can't draw a see-through window over other apps, though, so transparency, always-on-top and hiding from recordings are desktop-only. The exception is an **OBS Browser Source**: OBS renders the page transparently, so the background opacity works there.
+The `web/` folder is the whole interface and also runs as a plain web page ([live here](https://prompter.tintapenari.workers.dev)). Scrolling, the keyboard controls, settings and both languages all work there, plus fullscreen (`F`) and finger-dragging on phones and tablets.
+
+**Float mode (`P`)**: in Chrome and Edge on a computer, the prompter can move into a small window that stays on top of other apps (Document Picture-in-Picture). Close that window to bring it back to the tab.
+
+Browsers can't draw a see-through window, though, so in float mode the background is solid (opacity only changes how dark it is), and it can't be hidden from screen recordings. For a truly see-through overlay, use the desktop app. The exception is an **OBS Browser Source**: OBS renders the page transparently, so the background opacity works there.
 
 The web version is hosted on Cloudflare Workers (static assets from `web/`):
 
@@ -68,7 +74,7 @@ npm run deploy   # publish
 
 Teleprompter overlay tembus pandang buat Windows. Naskahnya melayang di atas semua window lain, opacity background-nya bisa diatur, dan semuanya bisa dikontrol pake keyboard. Bahasa interface bisa Indonesia atau English (tekan `L` atau lewat Pengaturan).
 
-**Versi web:** https://prompter.tintapenari.workers.dev. Di web, tembus pandang ke app lain, selalu di atas, dan sembunyi dari rekaman nggak bisa dipake. Fitur itu cuma ada di versi desktop.
+**Versi web:** https://prompter.tintapenari.workers.dev. Di Chrome atau Edge (laptop/PC), tekan `P` buat **mode melayang**: prompter pindah ke jendela kecil yang selalu di atas app lain. Tapi di browser background-nya nggak bisa tembus pandang dan nggak bisa disembunyiin dari rekaman. Buat itu pake versi desktop.
 
 ### Cara jalanin
 

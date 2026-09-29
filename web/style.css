@@ -409,3 +409,34 @@ body.browser .electron-only,
 body:not(.browser) .web-only { display: none !important; }
 
 .lang-row { padding-bottom: 8px; border-bottom: 1px solid var(--ui-line); }
+
+/* ---------- Floating window (web, Chrome/Edge) ---------- */
+#btnPip, .pip-only { display: none; }
+body.can-pip #btnPip { display: grid; }
+body.can-pip .pip-only { display: revert; }
+body.in-pip #btnPip { color: var(--accent); }
+body.in-pip #btnFullscreen { display: none; }
+
+.pip-notice { display: none; }
+body.pip-open .pip-notice {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 24px 16px;
+  text-align: center;
+  user-select: text;
+}
+.pip-notice svg {
+  width: 44px;
+  height: 44px;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  color: var(--accent);
+}
+.pip-notice h1 { margin: 0; font-size: 20px; font-weight: 650; }
+.pip-notice p { margin: 0 0 8px; max-width: 440px; color: var(--ui-muted); font-size: 14px; line-height: 1.55; }

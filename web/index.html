@@ -33,6 +33,9 @@
         <button id="btnHelp" class="icon" data-i18n-title="bar.help">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.3c-.7.3-1 .8-1 1.5v.6M12 17h.01"/></svg>
         </button>
+        <button id="btnPip" class="icon" data-i18n-title="bar.pip">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><rect x="12" y="11" width="7" height="6" rx="1" fill="currentColor" stroke="none"/></svg>
+        </button>
         <button id="btnFullscreen" class="icon web-only" data-i18n-title="bar.fullscreen">
           <svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
         </button>
@@ -164,6 +167,7 @@
         <kbd>E</kbd><span data-i18n="help.edit"></span>
         <kbd>S</kbd><span data-i18n="help.settings"></span>
         <kbd>L</kbd><span data-i18n="help.language"></span>
+        <kbd class="pip-only">P</kbd><span class="pip-only" data-i18n="help.pip"></span>
         <kbd class="web-only">F</kbd><span class="web-only" data-i18n="help.fullscreen"></span>
         <kbd>Esc</kbd><span data-i18n="help.esc"></span>
         <kbd>Scroll</kbd><span data-i18n="help.wheel"></span>
@@ -179,6 +183,14 @@
     <div class="resize electron-only" data-edge="lb"></div>
     <div class="resize electron-only" data-edge="rb"></div>
   </div>
+
+  <!-- Shown in this tab while the prompter is in its floating window -->
+  <section id="pipNotice" class="pip-notice">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><rect x="12" y="11" width="7" height="6" rx="1" fill="currentColor" stroke="none"/></svg>
+    <h1 data-i18n="pip.title"></h1>
+    <p data-i18n="pip.body"></p>
+    <button id="btnPipBack" class="btn primary" data-i18n="pip.back"></button>
+  </section>
 
   <script src="i18n.js"></script>
   <script src="app.js"></script>
