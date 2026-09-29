@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, screen, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, screen, Menu, shell } = require('electron');
 const path = require('node:path');
 const fs = require('node:fs');
 
@@ -65,7 +65,11 @@ function createWindow() {
 
   // Dropping a file must load it as a script, never navigate the window to it.
   win.webContents.on('will-navigate', (e) => e.preventDefault());
-  win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
+  // Links (the donation pages) open in the user's browser, never inside the app.
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    if (/^https:\/\//i.test(url)) shell.openExternal(url);
+    return { action: 'deny' };
+  });
 
   win.on('close', saveBounds);
   win.on('blur', stopResize);

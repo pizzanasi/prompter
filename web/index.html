@@ -33,6 +33,9 @@
         <button id="btnHelp" class="icon" data-i18n-title="bar.help">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.3c-.7.3-1 .8-1 1.5v.6M12 17h.01"/></svg>
         </button>
+        <button id="btnSupport" class="icon" data-i18n-title="bar.support">
+          <svg viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.1a4.3 4.3 0 0 1 7.5 2.7C19.5 15.4 12 20 12 20z"/></svg>
+        </button>
         <button id="btnPip" class="icon" data-i18n-title="bar.pip">
           <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><rect x="12" y="11" width="7" height="6" rx="1" fill="currentColor" stroke="none"/></svg>
         </button>
@@ -56,6 +59,20 @@
 
     <div id="progress" aria-hidden="true"><div></div></div>
     <div id="hud" role="status" aria-live="polite"></div>
+    <button id="supportNudge" class="nudge" data-i18n="support.nudge" hidden></button>
+
+    <!-- Support / donations -->
+    <section id="support" class="panel" hidden>
+      <div class="panel-head">
+        <h2 data-i18n="support.title"></h2>
+        <button class="icon" data-close data-i18n-title="panel.close"><svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/></svg></button>
+      </div>
+      <div class="panel-body">
+        <p class="support-body" data-i18n="support.body"></p>
+        <div id="supportLinks" class="support-links"></div>
+        <p class="muted support-note" data-i18n="support.note"></p>
+      </div>
+    </section>
 
     <!-- Script editor -->
     <section id="editor" class="panel" hidden>

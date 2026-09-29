@@ -6,6 +6,14 @@
   const I18N = window.PROMPTER_I18N;
   const $ = (id) => document.getElementById(id);
 
+  // Donation links. Paste the full https:// link of each page; an empty url hides
+  // that option, and with none filled in the support button doesn't show at all.
+  // `region` picks the label: 'local' = Indonesia (QRIS / e-wallet), 'global' = card / PayPal.
+  const SUPPORT_LINKS = [
+    { region: 'local', name: 'Saweria', url: '' },
+    { region: 'global', name: 'Ko-fi', url: '' },
+  ];
+
   const SETTINGS_KEY = 'prompter.settings.v1';
   const SCRIPT_KEY = 'prompter.script.v1';
   const SEEN_KEY = 'prompter.seenIntro.v1';
@@ -97,8 +105,11 @@
     editorText: $('editorText'),
     wordCount: $('wordCount'),
     fileInput: $('fileInput'),
+    supportLinks: $('supportLinks'),
+    supportNudge: $('supportNudge'),
   };
-  const panels = { editor: $('editor'), settings: $('settings'), help: $('help') };
+  const panels = { editor: $('editor'), settings: $('settings'), help: $('help'), support: $('support') };
+  const supportLinks = SUPPORT_LINKS.filter((link) => /^https:\/\/\S+$/.test(link.url));
   const controls = [...document.querySelectorAll('[data-key]')];
 
   let playing = false;
@@ -248,6 +259,7 @@
       if (playing) {
         setPlaying(false);
         showHud(t('hud.done'));
+        nudgeSupport();
       }
     }
 
@@ -329,6 +341,42 @@
     for (const n of nodes('[data-i18n]')) n.textContent = t(n.dataset.i18n);
     for (const n of nodes('[data-i18n-title]')) n.title = t(n.dataset.i18nTitle);
     for (const n of nodes('[data-i18n-placeholder]')) n.placeholder = t(n.dataset.i18nPlaceholder);
+    renderSupportLinks();
+  }
+
+  // ---------- Support / donations ----------
+
+  function renderSupportLinks() {
+    // Indonesian speakers see the local option first, everyone else the global one.
+    const first = settings.lang === 'id' ? 'local' : 'global';
+    const ordered = [...supportLinks].sort((a, b) => (b.region === first) - (a.region === first));
+    el.supportLinks.replaceChildren(...ordered.map((link) => {
+      const a = document.createElement('a');
+      a.className = 'support-link';
+      a.href = link.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      const cup = document.createElement('span');
+      cup.className = 'cup';
+      cup.textContent = '☕';
+      const text = document.createElement('span');
+      const name = document.createElement('strong');
+      name.textContent = link.name;
+      const how = document.createElement('small');
+      how.textContent = t(link.region === 'local' ? 'support.local' : 'support.global');
+      text.append(name, how);
+      a.append(cup, text);
+      return a;
+    }));
+  }
+
+  // One gentle reminder per session, only after a script has been read to the end.
+  let supportNudged = false;
+  function nudgeSupport() {
+    if (supportNudged || !supportLinks.length || openPanel) return;
+    supportNudged = true;
+    el.supportNudge.hidden = false;
+    later(() => { el.supportNudge.hidden = true; }, 8000);
   }
 
   function settingChanged(key) {
@@ -347,6 +395,7 @@
     for (const [key, node] of Object.entries(panels)) node.hidden = key !== name;
     openPanel = name;
     document.body.classList.toggle('panel-open', !!name);
+    if (name) el.supportNudge.hidden = true;
 
     if (name === 'editor') {
       setPlaying(false);
@@ -649,6 +698,11 @@
   $('btnFullscreen').addEventListener('click', toggleFullscreen);
   $('btnPip').addEventListener('click', togglePip);
   $('btnPipBack').addEventListener('click', togglePip);
+  $('btnSupport').addEventListener('click', () => togglePanel('support'));
+  el.supportNudge.addEventListener('click', () => {
+    el.supportNudge.hidden = true;
+    setPanel('support');
+  });
   $('btnMin').addEventListener('click', () => api?.minimize());
   $('btnClose').addEventListener('click', () => api?.close());
   $('btnSaveScript').addEventListener('click', saveEditor);
@@ -690,6 +744,7 @@
   // OBS browser sources render transparent pages, so the opacity setting works there too.
   if (window.obsstudio) document.body.classList.add('obs');
   if (canPip) document.body.classList.add('can-pip');
+  if (supportLinks.length) document.body.classList.add('has-support');
   applyLanguage();
   syncControls();
   applySettings();
